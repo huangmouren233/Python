@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/compare.css') }}">
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <title>Title</title>
+</head>
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+        height: 100%;
+}
+
+th, td, tr {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #BDBDBD;}
+</style>
+<body>
+<nav class="navbar">
+        <span class="open-side">
+            <a href="#" onclick="openSideMenu()">
+                <svg width="30" height="30">
+                    <path d="M0,5 30,5" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,14 30,14" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,23 30,23" stroke="#fff" stroke-width="5"></path>
+                </svg>
+            </a>
+        </span>
+    <ul class="navbar-nav">
+        <li><a href="home" >HOME</a></li>
+        <li><a href="index" >Check</a></li>
+        <li><a href="wordcloud" >ECCV2018</a></li>
+        <li><a href="ICCV2019">ICCV2019</a></li>
+        <li><a href="compare ">Compare</a></li>
+    </ul>
+</nav>
+
+<div id="side-menu" class="side-nav">
+    <a href="#" class="btn-close" onclick="closeSideMenu()">&times;</a>
+    <a href="home">HOME</a>
+    <a href="index" >Check</a>
+    <a href="wordcloud" >ECCV2018</a>
+    <a href="ICCV2019">ICCV2019</a>
+    <a href="compare ">Compare</a>
+</div>
+<section class="layout absolute">
+<article class="left-center-right">
+
+    <div class="left">
+        <table >
+    <tr>
+        <th>TOP10热点词汇</th>
+        <th>ECCV2018</th>
+        <th>ICCV2019</th>
+    </tr>
+    <tr>
+        <td>TOP1</td>
+        <td>{{ data[0]}}</td>
+        <td>{{ data2[0]}}</td>
+    </tr>
+    <tr>
+        <td>TOP2</td>
+        <td>{{ data[1]}}</td>
+        <td>{{ data2[1]}}</td>
+    </tr>
+    <tr>
+        <td>TOP3</td>
+        <td>{{ data[2]}}</td>
+        <td>{{ data2[2]}}</td>
+    </tr>
+    <tr>
+        <td>TOP4</td>
+        <td>{{ data[3]}}</td>
+        <td>{{ data2[3]}}</td>
+    </tr>
+    <tr>
+        <td>TOP5</td>
+        <td>{{ data[4]}}</td>
+        <td>{{ data2[4]}}</td>
+    </tr>
+    <tr>
+        <td>TOP6</td>
+        <td>{{ data[5]}}</td>
+        <td>{{ data2[5]}}</td>
+    </tr>
+    <tr>
+        <td>TOP7</td>
+        <td>{{ data[6]}}</td>
+        <td>{{ data2[6]}}</td>
+    </tr>
+    <tr>
+        <td>TOP8</td>
+        <td>{{ data[7]}}</td>
+        <td>{{ data2[7]}}</td>
+    </tr>
+    <tr>
+        <td>TOP9</td>
+        <td>{{ data[8]}}</td>
+        <td>{{ data2[8]}}</td>
+    </tr>
+    <tr>
+        <td>TOP10</td>
+        <td>{{ data[9]}}</td>
+        <td>{{ data2[9]}}</td>
+    </tr>
+</table>
+    </div>
+    <div class="center" id="main1"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+       var chartDom = document.getElementById('main1');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+    title: {
+        text: 'ECCV2018与ICCV2019TOP10热词展示',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    legend: {
+        left: 'center',
+        top: 'bottom',
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: true},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    series: [
+        {
+            name: 'ECCV2018',
+            type: 'pie',
+            radius: [20, 140],
+            center: ['25%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 5
+            },
+            data: [
+                {value: '{{ data1[0]}}', name: '{{ data[0]}}'},
+                {value: '{{ data1[1]}}', name: '{{ data[1]}}'},
+                {value: '{{ data1[2]}}', name: '{{ data[2]}}'},
+                {value: '{{ data1[3]}}', name: '{{ data[3]}}'},
+                {value: '{{ data1[4]}}', name: '{{ data[4]}}'},
+                {value: '{{ data1[5]}}', name: '{{ data[5]}}'},
+                {value: '{{ data1[6]}}', name: '{{ data[6]}}'},
+                {value: '{{ data1[7]}}', name: '{{ data[7]}}'},
+                {value: '{{ data1[8]}}', name: '{{ data[8]}}'},
+                {value: '{{ data1[9]}}', name: '{{ data[9]}}'}
+            ]
+        },
+        {
+            name: 'ICCV2019',
+            type: 'pie',
+            radius: [20, 140],
+            center: ['75%', '50%'],
+            roseType: 'area',
+            itemStyle: {
+                borderRadius: 5
+            },
+            data: [
+                {value: '{{ data3[0]}}', name: '{{ data2[0]}}'},
+                {value: '{{ data3[1]}}', name: '{{ data2[1]}}'},
+                {value: '{{ data3[2]}}', name: '{{ data2[2]}}'},
+                {value: '{{ data3[3]}}', name: '{{ data2[3]}}'},
+                {value: '{{ data3[4]}}', name: '{{ data2[4]}}'},
+                {value: '{{ data3[5]}}', name: '{{ data2[5]}}'},
+                {value: '{{ data3[6]}}', name: '{{ data2[6]}}'},
+                {value: '{{ data3[7]}}', name: '{{ data2[7]}}'},
+                {value: '{{ data3[8]}}', name: '{{ data2[8]}}'},
+                {value: '{{ data3[9]}}', name: '{{ data2[9]}}'}
+            ]
+        }
+    ]
+};
+option && myChart.setOption(option);
+    </script>
+</article>
+</section>
+<script>
+    function openSideMenu() {
+        document.getElementById('side-menu').style.width = '250px';
+        document.getElementById('main').style.marginLeft = '250px';
+    }
+
+    function closeSideMenu() {
+        document.getElementById('side-menu').style.width = '0';
+        document.getElementById('main').style.marginLeft = '0';
+    }
+</script>
+</body>
+</html>

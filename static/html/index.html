@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar">
+        <span class="open-side">
+            <a href="#" onclick="openSideMenu()">
+                <svg width="30" height="30">
+                    <path d="M0,5 30,5" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,14 30,14" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,23 30,23" stroke="#fff" stroke-width="5"></path>
+                </svg>
+            </a>
+        </span>
+    <ul class="navbar-nav">
+        <li><a href="{{ url_for('static', filename='html/home.html') }}" >HOME</a></li>
+        <li><a href="{{ url_for('static', filename='html/index.html') }}" >Check</a></li>
+        <li><a href="{{ url_for('static', filename='images/img.png') }}" >Wordcloud</a></li>
+        <li><a href="#">Echart</a></li>
+    </ul>
+</nav>
+
+<div id="side-menu" class="side-nav">
+    <a href="#" class="btn-close" onclick="closeSideMenu()">&times;</a>
+    <a href="{{ url_for('static', filename='html/home.html') }}">HOME</a>
+    <a href="{{ url_for('static', filename='html/index.html') }}" >Check</a>
+    <a href="{{ url_for('static', filename='html/wordcloud.html') }}" >Wordcloud</a>
+    <a href="#">Echart</a>
+</div>
+<center>
+    <form id="form1">
+        标题查询<input type="text" name="check" id="title">
+        摘要查询<input type="text" name="check" id="abstract">
+        关键词查询<input type="text" name="check" id="keywords">
+        <button id="btn">查询</button>
+        <input type="reset" value="重置">
+        <button id="btnall">查询全部</button></classa>
+
+    </form>
+</center>
+<br>
+<div class="show"></div>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btn").click(function () {
+            var abstract = $("#abstract").val();
+            var keywords = $("#keywords").val();
+            var title = $("#title").val();
+            $.ajax({
+                type: 'get',
+                url: '/check',
+                data: {
+                    'title': title,
+                    'abstract': abstract,
+                    'keywords': keywords
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var text = "<table border='1px'><thead><tr>" +
+                        "<th>序号</th><th>标题</th><th>摘要</th><th>关键词</th><th>超链接</th></tr></thead><tbody>";
+                    for (var i = 0; i < data.paper.length; i++) {
+                        text += "<tr>";
+                        text += "<td style='text-align: center'>" + i + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][0] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][1] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][2] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][3] + "</td>" +
+                            "</tr>";
+                    }
+                    text += "<tbody></table>";
+                    $(".show").html(text);
+                },
+                error: function () {
+                    alert("传送ajax失败")
+                }
+            })
+            return false
+        })
+    })
+    $(function () {
+        $("#btnall").click(function () {
+            $.ajax({
+                type: 'get',
+                url: '/checkall',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    var text = "<table border='1px'><thead><tr>" +
+                        "<th>序号</th><th>标题</th><th>摘要</th><th>关键词</th><th>超链接</th></tr></thead><tbody>";
+                    for (var i = 0; i < data.paper.length; i++) {
+                        text += "<tr>";
+                        text += "<td style='text-align: center'>" + i + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][0] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][1] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][2] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][3] + "</td>" +
+                            "</tr>";
+                    }
+                    text += "<tbody></table>";
+                    $(".show").html(text);
+                },
+                error: function () {
+                    alert("传送ajax失败")
+                }
+            })
+            return false
+        })
+    })
+</script>
+<script>
+    function openSideMenu() {
+        document.getElementById('side-menu').style.width = '250px';
+        document.getElementById('main').style.marginLeft = '250px';
+    }
+
+    function closeSideMenu() {
+        document.getElementById('side-menu').style.width = '0';
+        document.getElementById('main').style.marginLeft = '0';
+    }
+</script>
+</body>
+</html>

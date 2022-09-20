@@ -1,0 +1,53 @@
+.search {
+	width:1250px;
+	height:38px;
+	border:solid 1px #b8c4ce;
+	border-radius:5px;
+	background:#FFF;
+	margin:0 auto;
+}
+.fl {
+	float:left;
+}
+.alreadychoice {
+	width:80px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	background:#fcfcfc;
+	border-radius:3px;
+	cursor:pointer;
+	display: block;
+	padding:0px 20px;
+	color:#637889;
+	font-size:14px;
+	float:left;
+}
+.searchInp {
+	width:250px;
+	border:none;
+	color:#b8c4ce;
+	display:block;
+	background:none;
+	height:auto;
+	line-height:37px;
+	text-align:center;
+	/*padding:10px 5px;
+	*/
+    font-size:14px;
+	float:left;
+}
+.searchSub {
+	display:block;
+	width:53px;
+	height:38px;
+	background:url(http://www.jq22.com/img/cs/500x300-2.png) -15px -2px;
+	border:none;
+	cursor:pointer;
+	float:left;
+	padding:0;
+}
+.aoligei{
+	background:#2E9AFE;
+	height: 63px;
+}

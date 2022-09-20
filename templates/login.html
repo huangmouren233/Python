@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <title>注册或登录</title>
+</head>
+<body>
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form action="#" id="form_sub_a">
+            <h1>注 册</h1>
+            <div class="social-container">
+                <a href="#" class="social"><i class="fab
+                    fa-qq"></i> </a>
+                <a href="#" class="social"><i class="fab
+                    fa-weixin"></i> </a>
+                <a href="#" class="social"><i class="fab
+                    fa-weibo"></i> </a>
+            </div>
+            <span>选择以上方式登录或使用您的账号</span>
+            <input type="text" placeholder="姓名" required id="name"/>
+            <input type="text" placeholder="电话" required id="telephone1" />
+            <input type="password" placeholder="密码" required id="password1"/>
+            <button id = 'register'>注册</button>
+        </form>
+    </div>
+    <div class="form-container sign-in-container">
+        <form action="#" id="form_sub_b">
+            <h1>登 录</h1>
+            <div class="social-container">
+                <a href="#" class="social"><i class="fab fa-qq"></i></a>
+                <a href="#" class="social"><i class="fab fa-weixin"></i></a>
+                <a href="#" class="social"><i class="fab fa-weibo"></i></a>
+            </div>
+            <span>请使用以上方式登录或使用您的账号</span>
+            <input type="text" placeholder="电话" id="telephone2" required/>
+            <input type="password" placeholder="密码" id="password" required/>
+            <a href="#">忘记密码</a>
+            <button id="log">登录</button>
+        </form>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>已有帐号？</h1>
+                <p>请使用您的账号进行登录</p>
+                <button class="ghost" id="signIn">登录</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>没有账号？</h1>
+                <p>立即注册加入我们，和我们一起开始旅程吧。</p>
+                <button class="ghost" id="signUp">注册</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/js/login.js"></script>
+</body>
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+
+
+    $("#log").click(function () {
+        var account = $("#telephone2").val()
+        var password = $("#password").val()
+        data = {'account': account, 'password': password}
+        $.ajax({
+            url: 'login',
+            method: 'GET',
+            data: data,
+            async: false,
+            success: function (data) {
+                if(data.data==1){
+                    alert("密码正确，正在跳转.......")
+                    window.location.href = "/home"
+                }
+                else if(data.data ==2){
+                    alert(data.data)
+                }
+                else if(data.data ==3){
+                    alert("请输入11位电话号码")
+                }
+                else if(data.data==4){
+                    alert("密码不能为空")
+                }
+                else{
+                    alert("账号或密码错误")
+                }
+            },
+            error: function () {
+                alert("传送ajax请求失败")
+            }
+        })
+        return false
+    })
+    $("#register").click(function () {
+        var name = $("#name").val()
+        var account = $("#telephone1").val()
+        var password = $("#password1").val()
+        data = {'account': account, 'password': password, 'name':name}
+        $.ajax({
+            url: 'register',
+            method: 'GET',
+            data: data,
+            async: false,
+            success: function (data) {
+                if(data.data==1){
+                    alert("注册成功请重新登陆")
+                }
+                else if(data.data==5){
+                    alert("姓名不能为空")
+                }
+                else if(data.data ==2){
+                    alert('电话不能为空')
+                }
+                else if(data.data ==3){
+                    alert("请输入11位电话号码")
+                }
+                else if(data.data==4){
+                    alert("密码不能为空")
+                }
+
+                else{
+                    alert("该账号已经存在")
+                }
+            },
+            error: function () {
+                alert("传送ajax请求失败")
+            }
+        })
+        return false
+    })
+</script>
+</html>

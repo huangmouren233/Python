@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/wordcloud.css') }}">
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <title>Title</title>
+</head>
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+        height: 100%;
+}
+
+th, td, tr {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #BDBDBD;}
+</style>
+<body>
+<nav class="navbar">
+        <span class="open-side">
+            <a href="#" onclick="openSideMenu()">
+                <svg width="30" height="30">
+                    <path d="M0,5 30,5" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,14 30,14" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,23 30,23" stroke="#fff" stroke-width="5"></path>
+                </svg>
+            </a>
+        </span>
+    <ul class="navbar-nav">
+        <li><a href="home" >HOME</a></li>
+        <li><a href="index" >Check</a></li>
+        <li><a href="wordcloud" >ECCV2018</a></li>
+        <li><a href="ICCV2019">ICCV2019</a></li>
+        <li><a href="compare ">Compare</a></li>
+    </ul>
+</nav>
+
+<div id="side-menu" class="side-nav">
+    <a href="#" class="btn-close" onclick="closeSideMenu()">&times;</a>
+    <a href="home">HOME</a>
+    <a href="index" >Check</a>
+    <a href="wordcloud" >ECCV2018</a>
+    <a href="ICCV2019">ICCV2019</a>
+    <a href="compare ">Compare</a>
+</div>
+<section class="layout absolute">
+<article class="left-center-right">
+
+    <div class="left">
+        <table >
+    <tr>
+        <th>TOP10热点词汇</th>
+    </tr>
+    <tr>
+        <td>{{ data[0]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[1]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[2]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[3]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[4]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[5]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[6]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[7]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[8]}}</td>
+    </tr>
+    <tr>
+        <td>{{ data[9]}}</td>
+    </tr>
+</table>
+    </div>
+    <div class="center" id="main1"></div>
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var chartDom = document.getElementById('main1');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+        title: {
+            text: 'TOP10热点词汇统计'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: ['{{ data[0]}}', '{{ data[1]}}', '{{ data[2]}}', '{{ data[3]}}', '{{ data[4]}}', '{{ data[5]}}', '{{ data[6]}}', '{{ data[7]}}', '{{ data[8]}}', '{{ data[9]}}']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: ['{{ data1[0]}}', '{{ data1[1]}}', '{{ data1[2]}}', '{{ data1[3]}}', '{{ data1[4]}}', '{{ data1[5]}}', '{{ data1[6]}}', '{{ data1[7]}}', '{{ data1[8]}}', '{{ data1[9]}}'],
+            type: 'line'
+        }]
+    };
+
+    option && myChart.setOption(option);
+</script>
+    <div class="right">
+    <img src="{{ url_for('static', filename='images/ciyuntu1.png') }}">
+    </div>
+</article>
+</section>
+<script>
+    function openSideMenu() {
+        document.getElementById('side-menu').style.width = '250px';
+        document.getElementById('main').style.marginLeft = '250px';
+    }
+
+    function closeSideMenu() {
+        document.getElementById('side-menu').style.width = '0';
+        document.getElementById('main').style.marginLeft = '0';
+    }
+</script>
+</body>
+</html>

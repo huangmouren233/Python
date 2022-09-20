@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Title</title>
+</head>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+    border: 1px solid black;
+}
+
+th, td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #E6E6E6 ;}
+</style>
+<body>
+<nav class="navbar">
+        <span class="open-side">
+            <a href="#" onclick="openSideMenu()">
+                <svg width="30" height="30">
+                    <path d="M0,5 30,5" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,14 30,14" stroke="#fff" stroke-width="5"></path>
+                    <path d="M0,23 30,23" stroke="#fff" stroke-width="5"></path>
+                </svg>
+            </a>
+        </span>
+    <ul class="navbar-nav">
+        <li><a href="home" >HOME</a></li>
+        <li><a href="index" >Check</a></li>
+        <li><a href="wordcloud" >ECCV2018</a></li>
+        <li><a href="ICCV2019">ICCV2019</a></li>
+        <li><a href="compare ">Compare</a></li>
+    </ul>
+</nav>
+
+<div id="side-menu" class="side-nav">
+    <a href="#" class="btn-close" onclick="closeSideMenu()">&times;</a>
+    <a href="home">HOME</a>
+    <a href="index" >Check</a>
+    <a href="wordcloud" >ECCV2018</a>
+    <a href="ICCV2019">ICCV2019</a>
+    <a href="compare ">Compare</a>
+</div>
+<div class="aoligei">
+    <div class="search">
+        <h4 class="alreadychoice">title</h4>
+        <input type="text" class="searchInp" id="title" name="searchKey" placeholder="请输入检索内容">
+        <h4 class="alreadychoice">abstract</h4>
+        <input type="text" class="searchInp" id="abstract" name="searchKey" placeholder="请输入检索内容">
+        <h4 class="alreadychoice">keywords</h4>
+        <input type="text" class="searchInp" id="keywords" name="searchKey" placeholder="请输入检索内容">
+        <input type="button" id="btn" value="查询" class="searchSub ">
+        <input type="button" id="btnall" value="查询全部" class="searchSub ">
+    </div>
+</div>
+<br>
+<div class="show"></div>
+
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btn").click(function () {
+            var title = $("#title").val();
+            var abstract = $("#abstract").val();
+            var keywords = $("#keywords").val();
+            $.ajax({
+                type: 'get',
+                url: '/check',
+                data: {
+                    'title': title,
+                    'abstract': abstract,
+                    'keywords': keywords
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var text = "<table border='1px'><thead><tr>" +
+                        "<th>序号</th><th>标题</th><th>摘要</th><th>关键词</th><th>超链接</th><th>操作</th></tr></thead><tbody>";
+                    for (var i = 0; i < data.paper.length; i++) {
+                        text += "<tr>";
+                        text += "<td style=' align=center '>" + i + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][0] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][1] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][2] + "</td>" +
+                            "<td style='text-align: center'><a target='_blank' href="+data.paper[i][3]+">"+ data.paper[i][3]+ "</a></td>" +
+                            "<td style='text-align: center'><a href='delete?title="+ data.paper[i][0] +"' class='link_button'>删除</a></td>" +
+                            "</tr>";
+                    }
+                    text += "<tbody></table>";
+                    $(".show").html(text);
+                },
+                error: function () {
+                    alert("传送ajax失败")
+                }
+            })
+            return false
+        })
+    })
+    $(function () {
+        $("#btnall").click(function () {
+            $.ajax({
+                type: 'get',
+                url: '/checkall',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    var text = "<table border='1px' style=' align = center '><thead><tr>" +
+                        "<th>序号</th><th>标题</th><th>摘要</th><th>关键词</th><th>超链接</th><th>操作</th></tr></thead><tbody>";
+                    for (var i = 0; i < data.paper.length; i++) {
+                        text += "<tr>";
+                        text += "<td style='text-align: center'>" + i + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][0] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][1] + "</td>" +
+                            "<td style='text-align: center'>" + data.paper[i][2] + "</td>" +
+                            "<td style='text-align: center'><a target='_blank' href="+data.paper[i][3]+">"+ data.paper[i][3]+ "</a></td>" +
+                            "<td style='text-align: center'><a href='delete?title="+ data.paper[i][0] +"'>删除</a></td>" +
+                            "</tr>";
+                    }
+                    text += "<tbody></table>";
+                    $(".show").html(text);
+                },
+                error: function () {
+                    alert("传送ajax失败")
+                }
+            })
+            return false
+        })
+    })
+</script>
+<script>
+    function openSideMenu() {
+        document.getElementById('side-menu').style.width = '250px';
+        document.getElementById('main').style.marginLeft = '250px';
+    }
+
+    function closeSideMenu() {
+        document.getElementById('side-menu').style.width = '0';
+        document.getElementById('main').style.marginLeft = '0';
+    }
+</script>
+</body>
+</html>
